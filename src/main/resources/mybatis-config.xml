@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" /><!-- 全局映射器启用缓存 -->
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="defaultExecutorType" value="REUSE" />
+	</settings>
+	
+	<!-- 命名空间 这里相当于在后面mapper里 给对象定义一个 名字，在mapper里可以直接通过名字引用该对象-->
+	<typeAliases>
+		<!--
+		<typeAlias alias="UserEntity" type="com.manager.data.model.UserEntity" />  
+		-->
+	</typeAliases>
+	
+</configuration>

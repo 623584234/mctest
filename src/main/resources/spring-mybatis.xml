@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+    http://www.springframework.org/schema/context
+    http://www.springframework.org/schema/context/spring-context-4.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+    http://www.springframework.org/schema/util 
+    http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<!-- 引入jdbc配置文件 <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"> 
+		<property name="location" value="classpath:properties/jdbc.properties" /> 
+		</bean> -->
+	<context:property-placeholder
+		location="classpath:properties/jdbc.properties" />
+
+	<!-- 数据源基本配置 ${******}这种都是上面引用上面配置文件中的配置 -->
+	<bean id="dataSource"
+		class="com.mchange.v2.c3p0.ComboPooledDataSource" >
+		<property name="user" value="${jdbc.username}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+		<property name="jdbcUrl" value="${jdbc.url}"></property>
+		<property name="driverClass" value="${jdbc.driver}"></property>
+
+		<!--连接池中保留的最大连接数。默认值: 15 -->
+		<property name="maxPoolSize"
+			value="${dataSource.maxPoolSize}" />
+		<!-- 连接池中保留的最小连接数，默认为：3 -->
+		<property name="minPoolSize"
+			value="${dataSource.minPoolSize}" />
+		<!-- 初始化连接池中的连接数，取值应在minPoolSize与maxPoolSize之间，默认为3 -->
+		<property name="initialPoolSize"
+			value="${dataSource.initialPoolSize}" />
+
+		<!-- 最大空闲时间内未使用则连接被丢弃。若为0则永不丢弃 -->
+		<property name="maxIdleTime"
+			value="${dataSource.maxIdleTime}" />
+		<!-- 每60秒检查所有连接池中的空闲连接。Default:0 -->
+		<property name="idleConnectionTestPeriod"
+			value="${dataSource.idleConnectionTestPeriod}" />
+
+		<property name="checkoutTimeout"
+			value="${dataSource.checkoutTimeout}" />
+
+		<!-- 两次连接中间隔时间，单位毫秒 -->
+		<property name="acquireRetryDelay"
+			value="${dataSource.acquireRetryDelay}" />
+		<!-- 当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default:3 -->
+		<property name="acquireIncrement"
+			value="${dataSource.acquireIncrement}" />
+		<!-- 定义在从数据库获取新连接失败后重复尝试的次数。Default: 30 -->
+		<property name="acquireRetryAttempts"
+			value="${dataSource.acquireRetryAttempts}" />
+		<!-- 获取连接失败将会引起所有等待连接池来获取连接的线程抛出异常。 -->
+		<property name="breakAfterAcquireFailure"
+			value="${dataSource.breakAfterAcquireFailure}" />
+
+		<!-- JDBC的标准参数，用以控制数据源内加载的PreparedStatements数量。 -->
+		<property name="maxStatements"
+			value="${dataSource.maxStatements}" />
+		<!-- 因性能消耗大请只在需要的时候使用它。 -->
+		<property name="testConnectionOnCheckin"
+			value="${dataSource.testConnectionOnCheckin}" />
+
+	</bean>
+
+	<!-- spring和MyBatis完美整合 该处引入的文件后面也有详细操作 -->
+	<bean id="sqlSessionFactory"
+		class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="configLocation"
+			value="classpath:mybatis-config.xml" />
+		<property name="typeAliasesPackage"
+			value="com.zhaohang.pojo"></property>
+		<property name="mapperLocations"
+			value="classpath:mapper/*.xml"></property>
+	</bean>
+
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactoryBeanName"
+			value="sqlSessionFactory"></property>
+		<property name="basePackage" value="com.zhaohang.dao" />
+	</bean>
+
+	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+</beans>
