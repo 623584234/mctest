@@ -31,7 +31,7 @@ table td{high:10px;}
 </style>
 </head>
 <body>
-	<form action="/zhaohang/getBilling" method="post">
+	<form action="<%=request.getContextPath()%>/getBilling" method="post">
 		<button type="button" onclick="start()">执行/重启脚本</button>
 		<button type="submit">查询账单</button>
 		查询流水号:<input type="text" name="code">
@@ -125,7 +125,7 @@ table td{high:10px;}
 			var startExe = confirm("是否启动脚本?\r\n(先检测并关闭已开始的脚本)");
 			if (startExe == true) {
 				$.ajax({
-					url : '/zhaohang/start',
+					url : '<%=request.getContextPath()%>/start',
 					type : 'POST',
 					success : function(data) {
 						alert(data.message);

@@ -6,7 +6,7 @@
 	    </appender>
 	    
 	    <!-- 打印sql -->
-	    <logger name="com.zhaohang.dao" level="DEBUG" />
+	    <logger name="com.mc.dao" level="DEBUG" />
 	    
 	    <root level="info">  	
 	        <appender-ref ref="STDOUT" /> 

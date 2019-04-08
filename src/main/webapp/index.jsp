@@ -31,7 +31,7 @@ html, body {
 </style>
 </head>
 <body>
-<form action ="/zhaohang/getBilling" method="post">
+<form action ="<%=request.getContextPath()%>/getBilling" method="post">
 	<button type="button" class="btn_left" onclick="start()">执行/重启脚本</button>
 	<button type="submit" class="btn_right">查询账单</button>
 </form>
@@ -42,7 +42,7 @@ html, body {
 		if(startExe==true)
 		{
 		  $.ajax({
-	            url:'/zhaohang/start',
+	            url:'/mctest/start',
 	            type:'POST',
 	            success:function(data){
 	                alert(data.message);

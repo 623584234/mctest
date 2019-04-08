@@ -80,7 +80,7 @@
 		<property name="configLocation"
 			value="classpath:mybatis-config.xml" />
 		<property name="typeAliasesPackage"
-			value="com.zhaohang.pojo"></property>
+			value="com.mc.pojo"></property>
 		<property name="mapperLocations"
 			value="classpath:mapper/*.xml"></property>
 	</bean>
@@ -89,7 +89,7 @@
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
 		<property name="sqlSessionFactoryBeanName"
 			value="sqlSessionFactory"></property>
-		<property name="basePackage" value="com.zhaohang.dao" />
+		<property name="basePackage" value="com.mc.dao" />
 	</bean>
 
 	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->

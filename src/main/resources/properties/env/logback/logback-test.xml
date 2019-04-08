@@ -46,7 +46,7 @@
     </appender>
 
     <!--打印指定info级别的日志, name为包名或全限类名  additivity="false"为不打印到root的ref中,默认为true-->
-    <logger name="com.zhaohang" level="info" >
+    <logger name="com.mc" level="info" >
        <appender-ref ref="INFO" />
     </logger>
 	

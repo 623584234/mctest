@@ -22,18 +22,45 @@
 
 	<!-- 启用Spring MVC注解 -->
 	<context:annotation-config />
-	<!-- 避免返回json时出现406 -->
+	<!-- 避免返回json时出现解析错误:406 -->
 	<mvc:annotation-driven >
-    <!-- 消息转换器 -->
+    <!-- 消息转换器 json返回到前台中文乱码问题 -->
     <mvc:message-converters register-defaults="true">
       <bean class="org.springframework.http.converter.StringHttpMessageConverter">
         <property name="supportedMediaTypes" value="text/html;charset=UTF-8"/>
       </bean>
     </mvc:message-converters>
   </mvc:annotation-driven>
+  
+  <!-- 
+	过滤器(Filter)和拦截器(Interceptor)区别：
+		过滤器：依赖servlet容器，基于函数回调。对所有请求过滤，只会在servlet启动时只实例化和初始化一次，但可过滤N次。。
+		拦截器：依赖于框架，基于反射机制，属于面向切面编程（AOP)，只拦截controller,可多次调用
+  	-->
+  <!-- 自定义拦截器 -->
+  <!--  
+  <mvc:interceptors>
+  	<mvc:interceptor>
+  		指定拦截方法 
+  		<mvc:mapping path="/getBilling"/>
+  		 自定义类需要继承handlerInterceptor或 webRequestInterceptor，
+  			  区别在于前者能控制不去执行请求.只能处理该请求前后做事,因此多用前者
+  		<bean class="com.mc.interceptor.testInterceptor"></bean>
+  	</mvc:interceptor>
+  </mvc:interceptors>
+  -->
+  
+  <!-- 不指定拦截方法时（拦截所有请求）,配置多拦截
+   <mvc:interceptors>
+  		<bean class="com.mc.interceptor.testInterceptor"></bean>
+  		<bean class="com.mc.interceptor.test2Interceptor"></bean>
+  </mvc:interceptors>
+   -->
+   <!-- 多拦截器时 ，执行方法顺序为：pre1 - pre2 - 请求 - post2 - post1 -  after2 - after1 -->
+   
     <!-- 扫描 -->
-    <context:component-scan base-package="com.zhaohang.service"/>
-    <context:component-scan base-package="com.zhaohang.controller"/>
+    <context:component-scan base-package="com.mc.service"/>
+    <context:component-scan base-package="com.mc.controller"/>
 
 	<!-- 配置任务线性池 -->
 	<task:executor id="executor" pool-size="10"/> 

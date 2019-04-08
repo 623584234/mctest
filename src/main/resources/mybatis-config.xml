@@ -7,13 +7,20 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<setting name="cacheEnabled" value="true" /><!-- 全局映射器启用缓存 -->
 		<setting name="lazyLoadingEnabled" value="true" />
 		<setting name="defaultExecutorType" value="REUSE" />
+		<!-- id自增 
+		<setting name="useGenerattedKeys" value="true"/>
+		-->
+		<!-- 使用别名替代列明 默认：true 
+		<setting name="userColumnLabel" value="true"/>
+		
+		 开启驼峰命名法 
+		<setting name="mapUnderscoreCamelCase" value="true"/>
+		-->
 	</settings>
 	
-	<!-- 命名空间 这里相当于在后面mapper里 给对象定义一个 名字，在mapper里可以直接通过名字引用该对象-->
+	<!-- 命名空间 这里相当于在后面mapper里 给对象定义一个 名字，在mapper里可以直接通过名字引用该对象
 	<typeAliases>
-		<!--
 		<typeAlias alias="UserEntity" type="com.manager.data.model.UserEntity" />  
-		-->
 	</typeAliases>
-	
+	-->
 </configuration>
