@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class LoginController {
 
+	
 	@RequestMapping("login")
 	public String login(String username, String pwd,HttpServletResponse response,HttpServletRequest request) {
-
+		
 		if("admin".equals(username) && "admin".equals(pwd)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("username", username);

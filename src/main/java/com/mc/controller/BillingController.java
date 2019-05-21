@@ -75,6 +75,7 @@ public class BillingController {
 	@PostMapping(value ="getBilling")
 	public String getBilling(Model model,String code)  {
 		ServerResponse billingList = billingService.getBillingList(code);
+		log.info("------------------");
 		model.addAttribute("billingList", billingList.getData());
 		return "check";
 	}

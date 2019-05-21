@@ -43,14 +43,15 @@ public class testFilter1 implements Filter {
 		HttpSession session = resque.getSession();
 
 		String noLoginPaths = config.getInitParameter("noLoginPaths");
+		System.out.println("RequestURL---------"+resque.getRequestURL());
+		System.out.println("RequestURI---------"+resque.getRequestURI());
+		System.out.println(resque.getRequestURI().split("/").length-1);
+		System.out.println("resque.getContextPath()---------"+resque.getContextPath());
 		if (noLoginPaths != null) {
 			String strAttr[] = noLoginPaths.split(";");
 			for (int i = 0; i < strAttr.length; i++) {
 				if (!"".equals(strAttr[i]) || strAttr[i] != null) {
-					System.out.println("RequestURL---------"+resque.getRequestURL());
-					System.out.println("RequestURI---------"+resque.getRequestURI());
-					System.out.println(resque.getRequestURI().split("/").length-1);
-					System.out.println("resque.getContextPath()---------"+resque.getContextPath());
+				
 					if (resque.getRequestURI().split("/")[resque.getRequestURI().split("/").length-1].equals(strAttr[i]) ) {
 						chain.doFilter(request, response);
 						return;

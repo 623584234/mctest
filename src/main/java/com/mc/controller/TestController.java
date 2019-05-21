@@ -1,22 +1,15 @@
 package com.mc.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeSet;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.mc.exception.GlobalException;
+import com.mc.util.StringUtil;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,20 +22,38 @@ import com.mc.dao.TestDao;
 @Controller
 @RequestMapping("/")
 public class TestController  {
-	@GetMapping("/testInterceptor1")
+
+	@GetMapping("exception")
+	public void testException(){
+		throw new GlobalException("111");
+	}
+	@GetMapping("exception2")
+	public void testException2(){
+		String a =null;
+		String b = StringUtils.isEmpty(a)?"1":"2";
+		System.out.println(b);
+	}
+
+	@GetMapping("testInterceptor1")
 	public void testInterceptor1() {
 		System.out.println("----------test1");
 	}
 	
-	@GetMapping("/testInterceptor2")
+	@GetMapping("testInterceptor2")
 	public void testInterceptor2() {
 		System.out.println("----------test2");
 	}
+
 	public static void main(String[] args) {
-//		Object a[]= {1,2,3,"4",1};
-//		List<?> list =Arrays.asLsist(a);
-		
-		//重写函数式接口
+
+//		String uid = UUID.randomUUID().toString().replace("-","");
+//        System.out.println(uid);
+//
+//        String c =null;
+//        String b = StringUtils.isEmpty(c)?"1":"2";
+//        System.out.println(b);
+
+        //重写函数式接口
 //		TestDao testDao =(a)->{
 //			Object ob[]= {1,2,3,"4",1};
 //			List<?> list =Arrays.asList(ob);
@@ -58,14 +69,36 @@ public class TestController  {
 		map.put("3", "3");
 		map.put("a4", "4");
 		map.put("a4", "4");
-	
+
+//		map.forEach((k,v)->System.out.println(k));
+
 		List<Entry<String, Object>> list1 = new ArrayList<>(map.entrySet());
-//		list1.forEach(p->System.out.println(p.getKey()+":"+p.getValue()));	
-//		两句结合= new ArrayList<>(map.entrySet()).forEach((k)->System.out.println(k.getKey()+":"+k.getValue()));
-		
-		//慎用Arrays.asList.该方法返回定长的 List，不支持 add 和 remove 操作,输出结果=System.out.println(list1);
+		System.out.println(list1);
+//		list1.forEach(p->System.out.println(p.getKey()+":"+p.getValue()));
+//		两句结合=new ArrayList<>(map.entrySet()).stream().forEach((k)->System.out.println(k.getKey()+":"+k.getValue()));
+
+		//list转map (下例中map中的key，value相等)
+		List<String> list = new ArrayList(Arrays.asList("1","2","3"));
+		Map<String, String> collect = list.stream().collect(Collectors.toMap(p -> p, q -> q));
+		System.out.println(collect);
+
+		//慎用Arrays.asList.该方法返回定长的 List，不支持 add 和 remove 操作,输出结果=System.out.println(list1)，看下面例子;
 //		Arrays.asList(map.entrySet()).forEach(System.out::println);
-		
+
+//      例子：
+        //不能为int
+        Integer a[]= {1,2,3,4,1};
+        //若为int，则有问题，注意返回值为List<int[]>
+//        int b[] = {1,2,3,4,1};
+//        List<int[]> ints = Arrays.asList(b);
+
+        List<Integer> listInt1 = Arrays.asList(a);
+        List<Integer> listInt2 = new ArrayList<>(Arrays.asList(a));
+        //1编译不通过：
+//        listInt1.add(1);
+        //2编译通过：
+        listInt2.add(1);
+
 		//例子：过滤list中的map中的数据
 //		Predicate<Entry<String, Object>> strFilter = (p)->!p.getKey().equals("2");
 //		list1.stream()
@@ -83,11 +116,10 @@ public class TestController  {
 //		list = list.stream()//结果:a,b,c,c                 //a,b						//a
 //			.filter(preFilter1.or(preFilter2).and(preFilter3.negate()).and(Predicate.isEqual("a")))
 //			.distinct()
-//			.collect(Collectors.toList());
+//			.collect(Collectors.toList())
 //		//假设没有list= ，就可直接.forEach
 //		list.forEach(System.out::println);
-		
-		
+
 		//HasSet去重无序,TreeSet去重按a-z或0-9自然排序,LinkedHashSet去重有序
 		Set<String> set = new HashSet<>();
 		set.add("哈哈");
@@ -169,14 +201,13 @@ public class TestController  {
 		因此:在Map中,所有的key就是一个Set集合.	
 */
 		
-/*
-  print,printf,println区别:
-		int a =1;
+
+//  print,printf,println区别:
+		/*int a =1;
 		System.out.println(a);
 		System.out.print(a+"\n");
-		System.out.printf("%d",a);
-*/
-		
+		System.out.printf("%d\n",a);*/
+
 /*	
 	函数式接口：Java8引用lambda表达式去重写接口。(日常没什么必要用)
 		前提：接口都有@FunctionalInterface,该接口只能有一个抽象方法（即默认方法），可有多个default方法，否则报错。

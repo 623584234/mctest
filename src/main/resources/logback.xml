@@ -1,4 +1,8 @@
 <configuration>
 	<property resource="properties/logback.properties" />
+	<include resource="properties/project/${spring.active}/logback.xml"/>
+<!-- 
+	<property resource="properties/logback.properties" />
 	<include resource="properties/env/logback/logback-${spring.active}.xml"/>
+ -->
 </configuration>
